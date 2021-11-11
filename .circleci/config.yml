@@ -30,6 +30,6 @@ jobs:
 
 
 workflows:
-  deployment:
+  default:
     jobs:
       - Lint

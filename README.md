@@ -1,4 +1,4 @@
-
+[![CircleCI](https://circleci.com/gh/archit009/CloudDevOps-Capstone-Submission/tree/master.svg?style=svg)](https://circleci.com/gh/archit009/CloudDevOps-Capstone-Submission/tree/master)
 # Cloud Devops Nanodegree Capstone Submission
 
 Final project in Udacity's Cloud Devops Nanodegree

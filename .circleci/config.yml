@@ -27,9 +27,29 @@ jobs:
           command: |
             . venv/bin/activate
             make lint    
+  
+  image-build-push:
+    machine: true
+    working_directory: ~/app
+    steps:
+      - checkout
+      - run:
+          name: Build/Push docker image
+          command: |
+            #Login to docker hub
+            docker login --username $DOCKER_USER --password $DOCKER_PASS
+            # Build image and add a descriptive tag
+            docker build --tag=capstone .
+            # List docker images
+            docker image ls
+            # Push image to a docker repository
+            docker tag capstone arch09/capstone
+            docker push arch09/capstone
 
 
 workflows:
   default:
     jobs:
       - Lint
+      - image-build-push:
+          requires: [Lint]

@@ -130,15 +130,15 @@ workflows:
       - Lint
       - image-build-push:
           requires: [Lint]
-      - create-cluster:
-          cluster-name: udacity-capstone
-          #creating and deploying cluster should be triggered via master branch only.
-          filters:
-            branches:
-              only: [master]
+      # - create-cluster:
+      #     cluster-name: udacity-capstone
+      #     #creating and deploying cluster should be triggered via master branch only.
+      #     filters:
+      #       branches:
+      #         only: [master]
       - deploy-to-cluster:
           cluster-name: udacity-capstone
-          requires: [create-cluster]
+          # requires: [create-cluster]
       - aws-eks/update-container-image:
           cluster-name: udacity-capstone
           container-image-updates: capstone=arch09/capstone

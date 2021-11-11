@@ -136,8 +136,8 @@ workflows:
       #     filters:
       #       branches:
       #         only: [master]
-      # - deploy-to-cluster:
-      #     cluster-name: udacity-capstone
+      - deploy-to-cluster:
+          cluster-name: udacity-capstone
       #     requires: [create-cluster]
       - aws-eks/update-container-image:
           cluster-name: udacity-capstone

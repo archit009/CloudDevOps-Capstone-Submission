@@ -100,6 +100,26 @@ jobs:
           resource-file-path: deployment-service.yml
           resource-name: deployment/capstone
 
+  check-cluster:
+    executor: aws-eks/python3
+    parameters:
+      cluster-name:
+        description: |
+          Checking Cluster
+        type: string
+    steps:
+      - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: << parameters.cluster-name >>
+      - run:
+          name: check cluster
+          command: |
+            kubectl get services
+            kubectl get deployment
+            kubectl get nodes
+
+
+
 orbs:
   aws-eks: circleci/aws-eks@1.0.3
   kubernetes: circleci/kubernetes@0.11.2
@@ -107,11 +127,24 @@ orbs:
 workflows:
   default:
     jobs:
-      - Lint
-      - image-build-push:
-          requires: [Lint]
-      - create-cluster:
+      # - Lint
+      # - image-build-push:
+      #     requires: [Lint]
+      # - create-cluster:
+      #     cluster-name: udacity-capstone
+      #     #creating and deploying cluster should be triggered via master branch only.
+      #     filters:
+      #       branches:
+      #         only: [master]
+      # - deploy-to-cluster:
+      #     cluster-name: udacity-capstone
+      #     requires: [create-cluster]
+      - aws-eks/update-container-image:
           cluster-name: udacity-capstone
-      - deploy-to-cluster:
+          container-image-updates: capstone=arch09/capstone
+          record: true
+          #requires: [deploy-to-cluster]
+          resource-name: deployment/capstone
+      - check-cluster:
           cluster-name: udacity-capstone
-          requires: [create-cluster]
+          #requires: [aws-eks/update-container-image]

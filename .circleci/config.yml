@@ -81,7 +81,10 @@ jobs:
             nodes-max: 2
             ssh-access: false
             ssh-public-key: ''
-
+orbs:
+  aws-eks: circleci/aws-eks@1.0.3
+  kubernetes: circleci/kubernetes@0.11.2
+  
 workflows:
   default:
     jobs:

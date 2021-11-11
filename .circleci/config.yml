@@ -81,10 +81,29 @@ jobs:
             nodes-max: 2
             ssh-access: false
             ssh-public-key: ''
+
+  deploy-to-cluster:
+    executor: aws-eks/python3
+    parameters:
+      cluster-name:
+        description: |
+          K8s deployment
+        type: string
+    steps:
+      - checkout
+      - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: << parameters.cluster-name >>
+          install-kubectl: true
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: false
+          resource-file-path: deployment-service.yml
+          resource-name: deployment/capstone
+
 orbs:
   aws-eks: circleci/aws-eks@1.0.3
   kubernetes: circleci/kubernetes@0.11.2
-  
+
 workflows:
   default:
     jobs:
@@ -93,3 +112,6 @@ workflows:
           requires: [Lint]
       - create-cluster:
           cluster-name: udacity-capstone
+      - deploy-to-cluster:
+          cluster-name: udacity-capstone
+          requires: [create-cluster]

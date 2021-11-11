@@ -138,7 +138,7 @@ workflows:
       #         only: [master]
       - deploy-to-cluster:
           cluster-name: udacity-capstone
-          # requires: [create-cluster]
+          requires: [image-build-push]
       - aws-eks/update-container-image:
           cluster-name: udacity-capstone
           container-image-updates: capstone=arch09/capstone
